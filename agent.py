@@ -47,7 +47,7 @@ class Agent:
         actor_optimizer=False,
         batch_size=200,
     ):
-    """ Performs one epoch in the environment, updates the gvfs and the actor network """
+        """Performs one epoch in the environment, updates the gvfs and the actor network"""
         batch_acts = []  # for actions
         batch_behs = []  # for behaviors
         batch_weights = []  # for R(tau) weighting in policy gradient
@@ -57,11 +57,12 @@ class Agent:
 
         while True:
 
-            self.state = env.maze.objects.agent.positions[0] * 1 #position
-            r_pos = env.maze.objects.goal.positions[0] * 1 #goal
-            self.action = self.controller(gvfs) #action
-            _, rew, done, _ = env.step(self.action) #one step in the environment
-            pos_next = env.maze.objects.agent.positions[0] * 1 #next position
+            # The agent does a step in the environment:
+            self.state = env.maze.objects.agent.positions[0] * 1  # position
+            r_pos = env.maze.objects.goal.positions[0] * 1  # goal
+            self.action = self.controller(gvfs)  # action
+            _, rew, done, _ = env.step(self.action)  # one step in the environment
+            pos_next = env.maze.objects.agent.positions[0] * 1  # next position
 
             ###### The primitives are required to update the gvfs, the prims. come from the actor net #############
             output_actor = torch.reshape(
@@ -86,7 +87,7 @@ class Agent:
             if self.exploration is True:
                 gvfs.td_backup(self.state, self.action, pos_next, utility)
 
-            # save action, behavior and reward
+            # Save action, behavior and reward
             batch_acts.append(self.action)
             batch_behs.append(self.beh)
             ep_rews.append(rew)
@@ -114,7 +115,6 @@ class Agent:
                 # end experience loop if we have enough of it
                 if len(batch_acts) > batch_size:
                     break
-
 
         # Train the actor after the batch is collected
         if self.exploration is False:
