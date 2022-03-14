@@ -31,8 +31,7 @@ class Agent:
                         gvfs.values[self.state[0], self.state[1], level, :]
                     )
                     break
-                else:
-                    self.beh = np.random.choice(range(len(gvfs.primitives)))
+                self.beh = np.random.choice(range(len(gvfs.primitives)))
 
             action = np.random.choice(
                 range(self.num_actions), p=gvfs.primitives[self.beh, :]
@@ -108,8 +107,11 @@ class Agent:
                 batch_weights += list(rtgs)
 
                 # reset episode-specific variables
-                L = env.maze.objects.free.positions
-                maze_config["start_idx"] = [L[np.random.randint(0, len(L))]]
+                maze_config["start_idx"] = [
+                    env.maze.objects.free.positions[
+                        np.random.randint(0, len(env.maze.objects.free.positions))
+                    ]
+                ]
                 _, done, ep_rews = env.reset(), False, []
 
                 # end experience loop if we have enough of it

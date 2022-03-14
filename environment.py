@@ -7,6 +7,7 @@ from mazelab import Object, VonNeumannMotion
 # The code depends on the "maze_config" variable, which is external to the classes in the script
 # This was done to ease the interaction with the gym module
 # 'maze_config' is changed in main.py when the maze is updated
+# and in the train_one_epoch function in the Agent module
 maze_config = {"shape": np.array([0, 0]), "start_idx": [0], "goal_idx": [0]}
 
 
